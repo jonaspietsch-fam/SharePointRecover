@@ -2,18 +2,18 @@
 param(
 
     # The url to the site containing the Site Requests list
-    [string]$URL="fammd.sharepoint.com/sites/Projekte9",
+    [string]$URL="https://fammd.sharepoint.com/sites/10-TZ",
     [string]$Stage="First",
-    [string]$Path="C:\SAP\SharePointDiscover\export.csv",
+    [string]$Path=".\export.csv",
     [int]$RowLimit=150000
 )
 
 
-Connect-PnPOnline -Url:$URL -UseWebLogin
+Connect-PnPOnline -Url $URL -Interactive
 
 Write-Host "Getting recycle bin items..."
 $RecycleStage;
-$RecycleStage = Get-PnPRecycleBinItem -FirstStage -RowLimit $RowLimit | ? -Property DeletedByEmail -eq "annette.handge@fam.de"
+$RecycleStage = Get-PnPRecycleBinItem -FirstStage -RowLimit $RowLimit | ? -Property DeletedByEmail -eq "ulf.eilrich@fam.de"
 $Output = @()
 
 

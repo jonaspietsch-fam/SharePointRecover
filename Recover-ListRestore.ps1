@@ -1,5 +1,5 @@
-﻿$SiteURL = "https://fammd.sharepoint.com/sites/Projekte9"
-Connect-PnPOnline -Url $SiteURL -UseWebLogin
+﻿$SiteURL = "https://fammd.sharepoint.com/sites/10-TZ"
+Connect-PnPOnline -Url $SiteURL -Interactive
 
 
 function Restore-RecycleBinItem {
@@ -20,7 +20,7 @@ $stopWatch = [system.diagnostics.stopwatch]::StartNew()
 
 # Batch restore up to 200 at a time
 
-$Input = Import-Csv -Path "C:\SAP\SharePointDiscover\export.csv"
+$Input = Import-Csv -Path ".\export.csv"
 
 $restoreList = $Input
 
@@ -31,7 +31,7 @@ $leftToProcess = $restoreListCount - $start
 
 $stopWatch = [system.diagnostics.stopwatch]::StartNew()
 while($leftToProcess -gt 0){
-    If($leftToProcess -lt 200){$numToProcess = $leftToProcess} Else {$numToProcess = 200}
+    If($leftToProcess -lt 1){$numToProcess = $leftToProcess} Else {$numToProcess = 1}
     Write-Host -ForegroundColor Yellow "Building statement to restore the following $numToProcess files"
     $Ids = @()
     for($i=0; $i -lt $numToProcess; $i++){
@@ -45,7 +45,7 @@ while($leftToProcess -gt 0){
     $Ids_As_string = [System.String]::Join(",", $($Ids | % {'"'+ $_.tostring() + '"'}))
     Restore-RecycleBinItem -Ids $Ids_As_string
     
-    $start += 200
+    $start += 1
     $leftToProcess = $restoreListCount - $start
 }
 

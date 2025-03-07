@@ -1,19 +1,16 @@
-[CmdletBinding(SupportsShouldProcess)]
-param(
+$URL = "https://fammd.sharepoint.com/sites/P_145106_Westshore_Reclaimer"
+$DeleteMail = "alexey.baryshnikov@fam.de"
 
-    # The url to the site containing the Site Requests list
-    [string]$URL="https://fammd.sharepoint.com/sites/10-TZ",
-    [string]$Stage="First",
-    [string]$Path=".\export.csv",
-    [int]$RowLimit=150000
-)
+$Stage="First"
+$Path=".\export.csv"
+$RowLimit=150000
 
 
 Connect-PnPOnline -Url $URL -Interactive
 
 Write-Host "Getting recycle bin items..."
 $RecycleStage;
-$RecycleStage = Get-PnPRecycleBinItem -FirstStage -RowLimit $RowLimit | ? -Property DeletedByEmail -eq "ulf.eilrich@fam.de"
+$RecycleStage = Get-PnPRecycleBinItem -FirstStage -RowLimit $RowLimit | ? -Property DeletedByEmail -eq $DeleteMail
 $Output = @()
 
 

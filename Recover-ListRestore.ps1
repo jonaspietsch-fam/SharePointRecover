@@ -1,6 +1,7 @@
-﻿$SiteURL = "https://fammd.sharepoint.com/sites/10-TZ"
-Connect-PnPOnline -Url $SiteURL -Interactive
+﻿$Url = "https://fammd.sharepoint.com/sites/P_145106_Westshore_Reclaimer"
+$batch = 1
 
+Connect-PnPOnline -Url $SiteURL -Interactive
 
 function Restore-RecycleBinItem {
     param(
@@ -31,7 +32,7 @@ $leftToProcess = $restoreListCount - $start
 
 $stopWatch = [system.diagnostics.stopwatch]::StartNew()
 while($leftToProcess -gt 0){
-    If($leftToProcess -lt 1){$numToProcess = $leftToProcess} Else {$numToProcess = 1}
+    If($leftToProcess -lt $batch){$numToProcess = $leftToProcess} Else {$numToProcess = $batch}
     Write-Host -ForegroundColor Yellow "Building statement to restore the following $numToProcess files"
     $Ids = @()
     for($i=0; $i -lt $numToProcess; $i++){
@@ -45,7 +46,7 @@ while($leftToProcess -gt 0){
     $Ids_As_string = [System.String]::Join(",", $($Ids | % {'"'+ $_.tostring() + '"'}))
     Restore-RecycleBinItem -Ids $Ids_As_string
     
-    $start += 1
+    $start += $batch
     $leftToProcess = $restoreListCount - $start
 }
 
